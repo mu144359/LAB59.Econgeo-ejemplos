@@ -1,0 +1,287 @@
+---
+title: "Econgeo ejemplos MD"
+output: html_document
+---
+Instalar librerias
+
+install.packages("devtools") #or
+install.packages("devtools", type = "win.binary")
+
+library(devtools)
+
+devtools::install_github("PABalland/EconGeo", force = T)
+
+Llamar librerias
+```{r}
+library (EconGeo)
+```
+
+
+___
+
+1. Graficar una curva de Hoover 
+
+Generar vectores sobre estadistica industrial y poblacional
+```{r}
+ind <- c(0, 10, 10, 30, 50)
+pop <- c(10, 15, 20, 25, 30)
+```
+
+Ver el vector ind
+```{r}
+ind
+```
+
+Ver el vector pop
+```{r}
+pop
+```
+
+Correr la funcion (30% de la poblacion produce 50% de los resultados industriales)
+```{r}
+Hoover.curve (ind, pop)
+```
+
+Calcular el Gini correspondiene al indice Hoover
+```{r}
+Hoover.Gini (ind, pop)
+```
+
+
+___
+
+2. GINI    
+
+Generar vectores de conteo industrial
+```{r}
+ind <- c(0, 10, 10, 30, 50)
+```
+
+Correr la funcion
+```{r}
+Gini (ind)
+```
+
+Generar una matriz region - industria
+```{r}
+mat1 = matrix (
+  c (0, 1, 0, 0,
+     0, 1, 0, 0,
+     0, 1, 0, 0,
+     0, 1, 0, 1,
+     0, 1, 1, 1), ncol = 4, byrow = T)
+rownames(mat1) <- c ("R1", "R2", "R3", "R4", "R5")
+colnames(mat1) <- c ("I1", "I2", "I3", "I4")
+```
+
+Correr la funcion
+```{r}
+Gini (mat1)
+```
+
+Correr la funcion agregando todas las industrias
+Gini (rowSums(mat1))
+
+Correr la funcion solo para la industria 1 (igualdad perfecta)
+```{r}
+Gini (mat1[,1])
+```
+
+Correr la funcion solo para la industria 2 (igualdad perfecta)
+```{r}
+Gini (mat1[,2])
+```
+
+Correr la funcion solo para la industria 3 (desigualdad perfecta: max Gini = (5-1)/5)
+```{r}
+Gini (mat1[,3])
+```
+
+Correr la funcion solo para la industria 4 (top 40% produce el 100% de los resultados)
+```{r}
+Gini (mat1[,4])
+```
+
+
+___
+
+3. HOOVER. GINI   
+
+Generar vectores de estadistica industrial y poblacional
+```{r}
+ind <- c(0, 10, 10, 30, 50)
+pop <- c(10, 15, 20, 25, 30)
+```
+
+Correr la funcion (30% de la poblacion produce el 50% de los resultados industriales)
+```{r}
+Hoover.Gini (ind, pop)
+```
+
+Generar una matriz region - industria
+```{r}
+mat2 = matrix (
+  c (0, 10, 0, 0,
+     0, 15, 0, 0,
+     0, 20, 0, 0,
+     0, 25, 0, 1,
+     0, 30, 1, 1), ncol = 4, byrow = T)
+rownames(mat2) <- c ("R1", "R2", "R3", "R4", "R5")
+colnames(mat2) <- c ("I1", "I2", "I3", "I4")
+```
+
+Correr la funcion
+```{r}
+Hoover.Gini (mat2, pop)
+```
+
+Correr la funcion agregando todas las industrias
+```{r}
+Hoover.Gini (rowSums(mat2), pop)
+```
+
+Correr la funcion solo para la industria 1 
+```{r}
+Hoover.Gini (mat2[,1], pop)
+```
+
+Correr la funcion solo para la industria 2 (perfectamente proporcional a la poblaciÃ³n)
+```{r}
+Hoover.Gini (mat2[,2], pop)
+```
+
+Correr la funcion solo para la industria 3 (30% de la poblacion produce el 100% de la producciÃ³n)
+```{r}
+Hoover.Gini (mat2[,3], pop)
+```
+
+Correr la funcion solo para la industria 4 (55% del poblacion produce el 100% de la produccion)
+```{r}
+Hoover.Gini (mat2[,4], pop)
+```
+
+
+___
+
+4. LOCATIONAL.GINI   
+
+Generar una matriz region - industria
+```{r}
+mat3 = matrix (
+  c (100, 0, 0, 0, 0,
+     0, 15, 5, 70, 10,
+     0, 20, 10, 20, 50,
+     0, 25, 30, 5, 40,
+     0, 40, 55, 5, 0), ncol = 5, byrow = T)
+rownames(mat3) <- c ("R1", "R2", "R3", "R4", "R5")
+colnames(mat3) <- c ("I1", "I2", "I3", "I4", "I5")
+```
+
+Correr la funcion
+```{r}
+locational.Gini (mat3)
+```
+
+
+___
+
+5. LOCATIONAL.GINI.CURVE   
+
+Generar una matriz region - industria
+```{r}
+mat3 = matrix (
+  c (100, 0, 0, 0, 0,
+     0, 15, 5, 70, 10,
+     0, 20, 10, 20, 50,
+     0, 25, 30, 5, 40,
+     0, 40, 55, 5, 0), ncol = 5, byrow = T)
+rownames(mat3) <- c ("R1", "R2", "R3", "R4", "R5")
+colnames(mat3) <- c ("I1", "I2", "I3", "I4", "I5")
+```
+
+Correr la funcion (mostrar industria #5)
+```{r}
+locational.Gini.curve (mat3)
+locational.Gini.curve (mat3, pdf = TRUE)
+```
+
+
+___
+
+6. LORENZ.CURVE      
+
+Generar vectores de estadistica industrial
+```{r}
+ind <- c(0, 10, 10, 30, 50)
+```
+
+Correr la funcion
+```{r}
+Lorenz.curve (ind)
+Lorenz.curve (ind, pdf = TRUE)
+Lorenz.curve (ind, plot = FALSE)
+```
+
+Generar una matriz region - industria
+```{r}
+mat1 = matrix (
+  c (0, 1, 0, 0,
+     0, 1, 0, 0,
+     0, 1, 0, 0,
+     0, 1, 0, 1,
+     0, 1, 1, 1), ncol = 4, byrow = T)
+rownames(mat1) <- c ("R1", "R2", "R3", "R4", "R5")
+colnames(mat1) <- c ("I1", "I2", "I3", "I4")
+```
+
+Correr la funcion
+```{r}
+Lorenz.curve (mat1)
+Lorenz.curve (mat1, pdf = TRUE)
+Lorenz.curve (mat1, plot = FALSE)
+```
+
+Correr la funcion agregando todas las industrias
+```{r}
+Lorenz.curve (rowSums(mat1))
+Lorenz.curve (rowSums(mat1), pdf = TRUE)
+Lorenz.curve (rowSums(mat1), plot = FALSE)
+```
+
+Correr la funcion solo para la industria 1 (igualdad perfecta)
+```{r}
+Lorenz.curve (mat1[,1])
+Lorenz.curve (mat1[,1], pdf = TRUE)
+Lorenz.curve (mat1[,1], plot = FALSE)
+```
+
+Correr la funcion solo para la industria 2 (igualdad perfecta)
+```{r}
+Lorenz.curve (mat1[,2])
+Lorenz.curve (mat1[,2], pdf = TRUE)
+Lorenz.curve (mat1[,2], plot = FALSE)
+```
+
+Correr la funcion solo para la industria 3 (desigualdad perfecta)
+```{r}
+Lorenz.curve (mat1[,3])
+Lorenz.curve (mat1[,3], pdf = TRUE)
+Lorenz.curve (mat1[,3], plot = FALSE)
+```
+
+Correr la funcion solo para la industria 4 (el top 40% produce el 100% de los resultados)
+```{r}
+Lorenz.curve (mat1[,4])
+Lorenz.curve (mat1[,4], pdf = TRUE)
+Lorenz.curve (mat1[,4], plot = FALSE)
+```
+
+Comparar la distribucion de las industrias
+
+```{r}
+par(mfrow=c(2,2))
+Lorenz.curve (mat1[,1])
+Lorenz.curve (mat1[,2])
+Lorenz.curve (mat1[,3])
+Lorenz.curve (mat1[,4])
+```
